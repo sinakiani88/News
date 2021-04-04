@@ -9,7 +9,8 @@ import com.bumptech.glide.Glide
 import com.example.news.data.entities.Article
 import com.example.news.databinding.NewsItemViewBinding
 
-class BreakingNewsAdapter constructor():RecyclerView.Adapter<BreakingNewsAdapter.BreakingNewsViewHolder>() {
+class BreakingNewsAdapter constructor(private val onClick:(article:Article)->Unit)
+    :RecyclerView.Adapter<BreakingNewsAdapter.BreakingNewsViewHolder>() {
 
 
    private val diffCallback = object : DiffUtil.ItemCallback<Article>(){
@@ -26,7 +27,7 @@ class BreakingNewsAdapter constructor():RecyclerView.Adapter<BreakingNewsAdapter
     =parent(parent)
 
     override fun onBindViewHolder(holder: BreakingNewsViewHolder, position: Int) {
-        holder.bind(differ.currentList[position])
+        holder.bind(differ.currentList[position],onClick)
     }
 
     override fun getItemCount(): Int =differ.currentList.size
@@ -36,7 +37,7 @@ class BreakingNewsAdapter constructor():RecyclerView.Adapter<BreakingNewsAdapter
 
     inner class BreakingNewsViewHolder(private val newsItemViewBinding: NewsItemViewBinding)
         :RecyclerView.ViewHolder(newsItemViewBinding.root){
-            fun bind(article: Article){
+            fun bind(article: Article, onClick:(article:Article)->Unit){
                 newsItemViewBinding.apply {
                     Glide
                             .with(this.root.context)
@@ -46,6 +47,9 @@ class BreakingNewsAdapter constructor():RecyclerView.Adapter<BreakingNewsAdapter
                     tvTitle.text = article.title
                     tvDescription.text = article.description
                     tvPublished.text = article.publishedAt
+                    this.root.setOnClickListener {
+                        onClick(article)
+                    }
 
                 }
             }

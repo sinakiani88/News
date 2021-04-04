@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.android.tools.build.jetifier.core.utils.Log
 import com.example.news.R
 import com.example.news.databinding.FragmentArticleBinding
@@ -45,9 +46,12 @@ class BreakingNewsFrag : Fragment() {
                 lifecycleScope.launch {
                     getBreakingNewsStateFlow.collect {
                         when (it.status){
-                            Status.SUCCESS->{
-                                rvBreakingNews.adapter = BreakingNewsAdapter().apply {
-                                    it.data?.let {response->
+                            Status.SUCCESS -> {
+                                rvBreakingNews.adapter = BreakingNewsAdapter { article ->
+                                        findNavController().navigate(BreakingNewsFragDirections.actionBreakingNewsFragToArticleFrag(article))
+
+                                }.apply {
+                                    it.data?.let { response ->
                                         differ.submitList(response.articles)
                                     }
                                 }

@@ -12,6 +12,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
 import javax.inject.Singleton
 
+
+//بعد از ساخت NewsApp
+//باید بگیم در سطح کل اپلیکیشن ساخته بشه روتروفیت، این شی را نگه دار تا زمانی که اجرا میشه
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {

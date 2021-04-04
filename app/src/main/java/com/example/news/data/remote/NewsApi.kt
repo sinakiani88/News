@@ -5,8 +5,8 @@ import com.example.news.data.entities.NewsResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-
-interface NewsApi {
+//دستور به سرور مرحله بعد از رتروفیت ماژول
+interface NewsApi {    //مربوط به سرور
 
     @GET("top-headlines")
     suspend fun getBreakingNews(

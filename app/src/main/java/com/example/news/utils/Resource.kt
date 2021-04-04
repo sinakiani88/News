@@ -2,7 +2,8 @@ package com.example.news.utils
 
 
 
-
+//فایل کمکی
+//
 data class Resource<out T,out S>(val status: Status , val data:T? = null , val message:S?=null){
     companion object{
 

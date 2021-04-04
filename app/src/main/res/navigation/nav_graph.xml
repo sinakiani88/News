@@ -24,7 +24,12 @@
         android:id="@+id/articleFrag"
         android:name="com.example.news.ui.ArticleFrag"
         android:label="fragment_article"
-        tools:layout="@layout/fragment_article" />
+        tools:layout="@layout/fragment_article" >
+        <argument
+            android:name="article"
+            app:argType="com.example.news.data.entities.Article"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/saveNewsFrag"
         android:name="com.example.news.ui.SaveNewsFrag"
