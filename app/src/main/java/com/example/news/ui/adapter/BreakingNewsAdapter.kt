@@ -1,23 +1,57 @@
 package com.example.news.ui.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.news.data.entities.Article
 import com.example.news.databinding.NewsItemViewBinding
 
-class BreakingNewsAdapter constructor():RecyclerView.Adapter<BreakingNewsAdapter.BreakingNewsViewHolder>() {
+class BreakingNewsAdapter constructor(private val onClick:(article:Article)->Unit)
+    :RecyclerView.Adapter<BreakingNewsAdapter.BreakingNewsViewHolder>() {
 
-    inner class BreakingNewsViewHolder(private val newsItemViewBinding: NewsItemViewBinding):RecyclerView.ViewHolder(newsItemViewBinding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreakingNewsViewHolder {
-        TODO("Not yet implemented")
-    }
+   private val diffCallback = object : DiffUtil.ItemCallback<Article>(){
+       override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean =oldItem
+               .url===newItem.url
+
+       override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean =oldItem==newItem
+
+   }
+
+    val differ = AsyncListDiffer(this,diffCallback)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreakingNewsViewHolder
+    =parent(parent)
 
     override fun onBindViewHolder(holder: BreakingNewsViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(differ.currentList[position],onClick)
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getItemCount(): Int =differ.currentList.size
+    private fun parent (parent: ViewGroup):BreakingNewsViewHolder=BreakingNewsViewHolder(
+            NewsItemViewBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+    )
 
+    inner class BreakingNewsViewHolder(private val newsItemViewBinding: NewsItemViewBinding)
+        :RecyclerView.ViewHolder(newsItemViewBinding.root){
+            fun bind(article: Article, onClick:(article:Article)->Unit){
+                newsItemViewBinding.apply {
+                    Glide
+                            .with(this.root.context)
+                            .load(article.urlToImage)
+                            .into(ivArticleImage)
+                    tvSource.text = article.source?.name
+                    tvTitle.text = article.title
+                    tvDescription.text = article.description
+                    tvPublished.text = article.publishedAt
+                    this.root.setOnClickListener {
+                        onClick(article)
+                    }
+
+                }
+            }
+        }
 }

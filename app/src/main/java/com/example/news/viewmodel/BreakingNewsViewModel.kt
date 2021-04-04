@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-@HiltViewModel
+@HiltViewModel     //دریافت از رپوزیتوری
 class BreakingNewsViewModel @Inject constructor(private val breakingNewsRepository: BreakingNewsRepository)
     :ViewModel() {
 
